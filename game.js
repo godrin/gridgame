@@ -54,15 +54,6 @@ function combine(pos0, pos1) {
 }
 
 
-function gameClick(pos) {
-    if (oldClick) {
-        combine(oldClick, pos);
-        oldClick = undefined;
-    } else {
-        oldClick = pos;
-    }
-}
-
 function lost() {
 	document.querySelector("body").className = "lost";
 }
