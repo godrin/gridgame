@@ -4,9 +4,8 @@ let oldClick;
 let score = 0;
 
 function generateNew() {
-    let r = Math.floor(Math.random() * 2) + 1;
-    return Math.pow(2, r);
-//   return Math.floor(Math.random()*4)+1;
+		var r = Math.floor(Math.random()*2);
+		return Math.pow(2, r);
 }
 
 function initGrid(w, h) {
@@ -15,8 +14,24 @@ function initGrid(w, h) {
     }
 }
 
+function checkCombinable(index0, index1) {
+	return grid[index0] == grid[index1];
+}
+
 // game logic
 
+function checkSolvable() {
+	for(let x=0; x<WIDTH-1; x++) {
+		for(let y=0; y<WIDTH-1; y++) {
+			var i = x + y * WIDTH;
+			if(checkCombinable(i, i+1) || checkCombinable(i, i + WIDTH)) {
+				console.log("COMBINABLE", x,y);
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 // pos0 = {x:2, y:3, index:20}
 function combine(pos0, pos1) {
@@ -26,7 +41,7 @@ function combine(pos0, pos1) {
         return;
     }
 
-    if (grid[pos0.index] != grid[pos1.index]) {
+	  if(!checkCombinable(pos0.index, pos1.index)) {
         console.log("CANCELLED - different value");
         return;
     }
@@ -48,6 +63,10 @@ function gameClick(pos) {
     }
 }
 
+function lost() {
+	document.querySelector("body").className = "lost";
+}
+
 // framework
 function initBox(box, x, y, index) {
     box.addEventListener("mousedown", function (e) {
@@ -55,6 +74,9 @@ function initBox(box, x, y, index) {
     });
     box.addEventListener("mouseup", function (e) {
         combine(oldClick, {x, y, index});
+				if(!checkSolvable()) {
+					lost();
+				}
         repaint();
     });
 }
@@ -80,5 +102,4 @@ function repaint() {
 
 initGrid(WIDTH, WIDTH);
 repaint();
-
 
