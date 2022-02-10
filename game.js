@@ -1,21 +1,19 @@
-var grid = [];
+const grid = [];
+const WIDTH = 5;
+let oldClick;
 
 function generateNew() {
   return Math.floor(Math.random()*4)+1;
 }
 
-function initGrid(w,h,val) {
+function initGrid(w,h) {
 	for(var x=0;x<w*h;x++) {
 		grid.push(generateNew());
 	}
 }
 
-const WIDTH = 8;
-
-
 // game logic
 
-var oldClick;
 
 // pos0 = {x:2, y:3, index:20}
 function combine(pos0, pos1) {
@@ -48,14 +46,16 @@ function gameClick(pos) {
 // framework
 function boxClicked(pos) {
 	gameClick(pos);
-  // random 
-
+  // random
 	repaint();
-
 }
 
 function initBox(box, x, y, index) {
-	box.addEventListener("click", function() { boxClicked({x,y, index}); });
+	box.addEventListener("click", function(e) {
+		console.log(e)
+		e.target.classList.add('active')
+		boxClicked({x,y, index});
+	});
 }
 
 function display(el, grid) {
@@ -67,14 +67,13 @@ function display(el, grid) {
 		initBox(box, index%8, Math.floor(index/8), index);
 		el.appendChild(box);
 	}
-
 }
 
 function repaint() {
 	display(document.querySelector("play-field"), grid);
 }
 
-initGrid(WIDTH, WIDTH, 1);
+initGrid(WIDTH, WIDTH);
 repaint();
 
 
