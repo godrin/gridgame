@@ -1,9 +1,12 @@
 const grid = [];
-const WIDTH = 5;
+const WIDTH = 4;
 let oldClick;
+const MOUSEDOWN = true;
 
 function generateNew() {
-  return Math.floor(Math.random()*4)+1;
+	var r = Math.floor(Math.random()*2)+1;
+	return Math.pow(2, r);
+//   return Math.floor(Math.random()*4)+1;
 }
 
 function initGrid(w,h) {
@@ -17,6 +20,7 @@ function initGrid(w,h) {
 
 // pos0 = {x:2, y:3, index:20}
 function combine(pos0, pos1) {
+	
   if (Math.abs(pos0.x-pos1.x) + Math.abs(pos0.y-pos1.y) != 1) {
 		console.log("CANCELLED - wrong position");
 		return;
@@ -51,11 +55,23 @@ function boxClicked(pos) {
 }
 
 function initBox(box, x, y, index) {
-	box.addEventListener("click", function(e) {
-		console.log(e)
-		e.target.classList.add('active')
-		boxClicked({x,y, index});
-	});
+	if(MOUSEDOWN) {
+		box.addEventListener("mousedown", function(e) {
+      oldClick = {x,y,index};
+		});
+		box.addEventListener("mouseup", function(e) {
+      combine(oldClick, {x,y,index});
+			repaint();
+		});
+	} else {
+
+
+		box.addEventListener("click", function(e) {
+			console.log(e)
+			e.target.classList.add('active')
+			boxClicked({x,y, index});
+		});
+	}
 }
 
 function display(el, grid) {
@@ -64,7 +80,7 @@ function display(el, grid) {
 	for(var index=0;index<grid.length;index++) {
 		let box = document.createElement("play-box");
 		box.innerHTML = grid[index];
-		initBox(box, index%8, Math.floor(index/8), index);
+		initBox(box, index % WIDTH, Math.floor(index / WIDTH), index);
 		el.appendChild(box);
 	}
 }
