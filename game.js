@@ -6,6 +6,25 @@ let hoverStack = [];
 let score = 0;
 let scoreToAdd = 0;
 
+
+// basic tools
+function inRect(pos, rect) {
+	return pos.x>=rect.left && pos.y>=rect.top && pos.x<=rect.right && pos.y<=rect.bottom;
+}
+
+function objectEqual(a, b) {
+    return JSON.stringify(a) == JSON.stringify(b);
+}
+
+function arrayContains(array, needle) {
+    let index = array.find(function (e) {
+        return objectEqual(e, needle);
+    });
+    return !!index;
+}
+
+// grid management
+
 function generateNew() {
     let r = Math.floor(Math.random() * 3);
     return Math.pow(2, r);
@@ -83,16 +102,6 @@ function combine(posStack) {
     displayScore()
 }
 
-function objectEqual(a, b) {
-    return JSON.stringify(a) == JSON.stringify(b);
-}
-
-function arrayContains(array, needle) {
-    let index = array.find(function (e) {
-        return objectEqual(e, needle);
-    });
-    return !!index;
-}
 
 function combinableStack(hoverStack, pos) {
     if (arrayContains(hoverStack, pos)) {
@@ -102,11 +111,10 @@ function combinableStack(hoverStack, pos) {
 }
 
 
-function lost() {
-    document.querySelector("body").className = "lost";
-}
 
-// framework
+/////////////////////////////
+// event management
+
 function initBox(box, pos) {
     box.addEventListener("mousedown", function (e) {
         box.className = "active";
@@ -129,14 +137,6 @@ function initBox(box, pos) {
             displayScore()
         }
     });
-}
-
-function setLost() {
-    document.querySelector("body").className = "lost";
-}
-
-function inRect(pos, rect) {
-	return pos.x>=rect.left && pos.y>=rect.top && pos.x<=rect.right && pos.y<=rect.bottom;
 }
 
 function findBox(playField, ev) {
@@ -185,6 +185,12 @@ function initGlobalEventListeners() {
 	playField.addEventListener("touchend", function(ev) {
 		document.dispatchEvent(new CustomEvent("mouseup"));
 	});
+}
+/////////////////////////////
+// Painting
+
+function setLost() {
+    document.querySelector("body").className = "lost";
 }
 
 function paintBox(grid, index, el) {
