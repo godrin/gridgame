@@ -19,6 +19,10 @@
 *, body, html {
     font-family: 'Share Tech Mono', monospace;
     box-sizing: border-box;
+    user-select: none;
+    -ms-user-select: None;
+    -moz-user-select: None;
+    -webkit-user-select: None;
 }
 
 
@@ -40,6 +44,9 @@ play-field {
     grid-template-columns: repeat(var(--play-field-dimension), var(--play-box-size));
     padding: 1px;
     user-select: none;
+    -ms-user-select: None;
+    -moz-user-select: None;
+    -webkit-user-select: None;
 }
 
 .lost play-field {
