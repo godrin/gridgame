@@ -6,7 +6,7 @@
     --box-font-size: 64px;
 
     /* THEME */
-    --background-color: #0b0b41;
+    --background-color: #5a5ad2;
     --font-color: #0b0b41;
     --primary-color: #59063c;
     --secondary-color: #e073bd;
@@ -30,13 +30,9 @@ body {
     display: grid;
     place-content: center;
     place-items: center;
-    /*gap: 32px;*/
-    /*font-family: Helvetica;*/
 }
 
 play-field {
-    /*background-color: white;*/
-    /*width: 244px;*/
     width: calc(var(--play-box-size) * var(--play-field-dimension));
     height: calc(var(--play-box-size) * var(--play-field-dimension));
     display: grid;
@@ -46,55 +42,66 @@ play-field {
 }
 
 .lost play-field {
-    opacity:0.8;
+    opacity: 0.8;
 }
+
 play-box {
-    width:var(--play-box-size);
-    height:var(--play-box-size);
-    background-color:var(--secondary-color);
+    width: var(--play-box-size);
+    height: var(--play-box-size);
+    background-color: var(--secondary-color);
     border: solid 4px var(--primary-color);
-    color:var(--primary-color);
+    border-radius: 8px;
+    color: var(--primary-color);
     font-size: var(--box-font-size);
 
     display: grid;
     place-content: center;
     transition: background-color 200ms linear;
 }
+
 play-box:hover {
-    background-color:var(--hover-color);
+    background-color: var(--hover-color);
 }
 
 play-box.active {
-    background-color:var(--active-color);
+    background-color: var(--active-color);
 }
+
 play-banner {
-    display:none;
+    display: none;
 }
 
 .lost play-banner {
     /*font-family: Helvetica;*/
-    font-size:40px;
+    font-size: 40px;
     color: red;
     position: absolute;
-    z-index:1;
+    z-index: 1;
     top: 40px;
-    left:50px;
-    display:block;
+    left: 50px;
+    display: block;
     padding: 20px;
-    background-color:white;
-    border:1px solid black;
+    background-color: white;
+    border: 1px solid black;
 }
-.lost play-box {
-    background-color:#AAA;
-}
-/*
 
-play-box.active {
-    background: red;
+.lost play-box {
+    background-color: #AAA;
 }
-*/
+
+score-bar {
+     display: grid;
+    grid-template-columns: 1fr min-content 1fr;
+}
 
 score {
+    grid-area: 1 / 2;
     color: white;
+    font-size: 64px;
+}
+
+score-to-add {
+    grid-area: 1 / 3;
+    color: var(--secondary-color);
     font-size: 64px;
 }
