@@ -1,6 +1,8 @@
 const grid = [];
 const WIDTH = 4;
-let oldClick;
+const MAX_LENGTH = 100;
+let hoverStack = [];
+//oldClick;
 let score = 0;
 
 function generateNew() {
@@ -9,88 +11,139 @@ function generateNew() {
 }
 
 function initGrid(w, h) {
-    for (let x = 0; x < w * h; x++) {
-        grid.push(generateNew());
-    }
+		for (let x = 0; x < w * h; x++) {
+				grid.push(generateNew());
+		}
 }
 
-function checkCombinable(index0, index1) {
-	return grid[index0] == grid[index1];
+function combinableByIndex(index0, index1) {
+		return grid[index0] == grid[index1];
+}
+
+function checkCombinable(pos0, pos1) {
+		if (Math.abs(pos0.x - pos1.x) + Math.abs(pos0.y - pos1.y) != 1) {
+				console.log("CANCELLED - wrong position");
+				return false;
+		}
+
+		if(!combinableByIndex(pos0.index, pos1.index)) {
+				console.log("CANCELLED - different value");
+				return false;
+		}
+		return true;
 }
 
 // game logic
 
 function checkSolvable() {
-	for(let x=0; x<WIDTH-1; x++) {
-		for(let y=0; y<WIDTH-1; y++) {
-			var i = x + y * WIDTH;
-			if(checkCombinable(i, i+1) || checkCombinable(i, i + WIDTH)) {
-				console.log("COMBINABLE", x,y);
-				return true;
-			}
+		for(let x=0; x<WIDTH-1; x++) {
+				for(let y=0; y<WIDTH-1; y++) {
+						var i = x + y * WIDTH;
+						if(combinableByIndex(i, i+1) || combinableByIndex(i, i + WIDTH)) {
+								console.log("COMBINABLE", x,y);
+								return true;
+						}
+				}
 		}
-	}
-	return false;
+		return false;
 }
 
 // pos0 = {x:2, y:3, index:20}
-function combine(pos0, pos1) {
+function combine(posStack) {
+		if(posStack.length<2) {
+				return;
+		}
+		// spiel mechanik
+		for(var pos of posStack.slice(0,-1)) {
+				grid[pos.index] = generateNew();
+		}
+		var lastPos = posStack[posStack.length-1];
+		var baseExp = Math.log(grid[lastPos.index]) / Math.log(2);
 
-    if (Math.abs(pos0.x - pos1.x) + Math.abs(pos0.y - pos1.y) != 1) {
-        console.log("CANCELLED - wrong position");
-        return;
-    }
+		score += grid[lastPos.index] = Math.pow(2,baseExp + posStack.length-1);
+}
 
-	  if(!checkCombinable(pos0.index, pos1.index)) {
-        console.log("CANCELLED - different value");
-        return;
-    }
+function objectEqual(a, b) {
+		return JSON.stringify(a) == JSON.stringify(b);
+}
+function arrayContains(array, needle) {
+		let index = array.find(function(e) { return objectEqual(e, needle); });
+		return !!index;
+}
 
-    console.log("combine", pos0, pos1);
-    // spiel mechanik
-    grid[pos1.index] += grid[pos0.index];
-    score += grid[pos1.index];
-    grid[pos0.index] = generateNew();
+function combinableStack(hoverStack, pos) {
+		if(arrayContains(hoverStack, pos)) {
+				return false;
+		}
+		return checkCombinable(hoverStack[hoverStack.length-1], pos);
 }
 
 
 function lost() {
-	document.querySelector("body").className = "lost";
+		document.querySelector("body").className = "lost";
 }
 
 // framework
-function initBox(box, x, y, index) {
-    box.addEventListener("mousedown", function (e) {
-        oldClick = {x, y, index};
-    });
-    box.addEventListener("mouseup", function (e) {
-        combine(oldClick, {x, y, index});
-				if(!checkSolvable()) {
-					lost();
+function initBox(box, pos) {
+		box.addEventListener("mousedown", function (e) {
+				box.className = "active";
+				hoverStack = [pos];
+		});
+		box.addEventListener("mousemove", function (e) {
+				if(hoverStack.length>0 && hoverStack.length<MAX_LENGTH && combinableStack(hoverStack, pos)) {
+						box.className = "active";
+						hoverStack.push(pos);
 				}
-        repaint();
-    });
+		});
+}
+
+function setLost() {
+		document.querySelector("body").className="lost";
+}
+document.addEventListener("mouseup", function (e) {
+		console.log("hoverStack", hoverStack);
+
+		for(let pos of hoverStack) {
+				pos.box.className = "";
+		}
+		combine(hoverStack);
+		repaint();
+		hoverStack = [];
+    if(!checkSolvable()) {
+				setLost();
+		}
+});
+
+function paintBox(grid, index, el) {
+		el.className = "";
+		el.innerHTML = grid[index];
 }
 
 function display(el, grid) {
-    el.innerHTML = "";
-    for (let index = 0; index < grid.length; index++) {
-        let box = document.createElement("play-box");
-        box.innerHTML = grid[index];
-        initBox(box, index % WIDTH, Math.floor(index / WIDTH), index);
-        el.appendChild(box);
-    }
+		if(el.children.length == 0) {
+				for (let index = 0; index < grid.length; index++) {
+						let box = document.createElement("play-box");
+						paintBox(grid, index, box);
+						initBox(box, {x: index % WIDTH, y: Math.floor(index / WIDTH), index, box});
+						el.appendChild(box);
+				}
+		} else {
+				for (let index = 0; index < grid.length; index++) {
+						let box = el.children[index];
+						paintBox(grid, index, box);
+
+				}
+		}
 }
 
 function displayScore(el, score) {
-    el.innerHTML = score;
+		el.innerHTML = score;
 }
 
 function repaint() {
-    display(document.querySelector("play-field"), grid);
-    displayScore(document.querySelector("score"), score);
+		display(document.querySelector("play-field"), grid);
+		displayScore(document.querySelector("score"), score);
 }
 
 initGrid(WIDTH, WIDTH);
 repaint();
-
