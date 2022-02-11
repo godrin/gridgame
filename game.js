@@ -98,6 +98,7 @@ function combine(posStack) {
     let lastPos = posStack[posStack.length - 1];
     grid[lastPos.index] = scoreToAdd;
     score += scoreToAdd;
+		playSound();
     scoreToAdd = 0;
     displayScore()
 }
@@ -223,17 +224,38 @@ function displayScore() {
     scoreAddElement.innerHTML = (scoreToAdd !== 0) ? ` +${scoreToAdd}` : '';
 }
 
+function playSound() {
+	if(document.querySelector("input").checked) {
+		var audio = new Audio('unbenannt.mp3');
+		audio.play();
+	}
+}
+
+function initSound() {
+	if(window.localStorage.getItem("sound")=="enabled") {
+		document.querySelector("input").checked = true;
+	} else {
+		document.querySelector("input").checked = false;
+	}
+
+	document.querySelector("input").addEventListener("change", function(ev) {
+		console.log("EV",ev);
+		window.localStorage.setItem("sound",ev.target.checked?"enabled":"disabled");
+	});
+}
+
 function repaint() {
-    display(document.querySelector("play-field"), grid);
-    displayScore()
+  display(document.querySelector("play-field"), grid);
+	displayScore()
 }
 
 
 function initStyle() {
-    document.documentElement.style.setProperty('--play-field-dimension', WIDTH.toString());
+	document.documentElement.style.setProperty('--play-field-dimension', WIDTH.toString());
 }
 
 initStyle();
+initSound();
 initGrid(WIDTH, WIDTH);
 repaint();
 initGlobalEventListeners();
