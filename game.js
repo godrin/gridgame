@@ -90,9 +90,15 @@ function initBox(box, pos) {
 				hoverStack = [pos];
 		});
 		box.addEventListener("mousemove", function (e) {
-				if(hoverStack.length>0 && hoverStack.length<MAX_LENGTH && combinableStack(hoverStack, pos)) {
-						box.className = "active";
-						hoverStack.push(pos);
+				if(hoverStack.length>0 && hoverStack.length<MAX_LENGTH) {
+						if(hoverStack.length>1 && objectEqual(hoverStack[hoverStack.length-2], pos)) {
+								var last = hoverStack.pop();
+								last.box.className = "";
+						}
+						if(combinableStack(hoverStack, pos)) {
+								box.className = "active";
+								hoverStack.push(pos);
+						}
 				}
 		});
 }
