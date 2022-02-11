@@ -164,32 +164,20 @@ function initGlobalEventListeners() {
 	let playField = document.querySelector("play-field");
 
 	playField.addEventListener("touchstart", function(ev) {
-		ev.preventDefault();
-		ev.stopPropagation();
 		let box = findBox(playField, ev);
 		if(box) {
 				box.dispatchEvent(new CustomEvent("mousedown"));
-				console.log("FOUND", box);
 		}
 	});
 	playField.addEventListener("touchmove", function(ev) {
-		ev.preventDefault();
-		ev.stopPropagation();
 		let box = findBox(playField, ev);
 		if(box) {
 				box.dispatchEvent(new CustomEvent("mousemove"));
-				console.log("FOUND", box);
 		}
-	}, false);
+	});
 	playField.addEventListener("touchend", function(ev) {
-		ev.preventDefault();
-		ev.stopPropagation();
 		document.dispatchEvent(new CustomEvent("mouseup"));
 	});
-	document.body.addEventListener("touchmove", function(ev) {
-		ev.preventDefault();
-		ev.stopPropagation();
-	}, false);
 }
 
 function paintBox(grid, index, el) {
