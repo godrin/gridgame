@@ -1,10 +1,9 @@
 const grid = [];
 const WIDTH = 4;
 const MAX_LENGTH = 100;
-let hoverStack = [];
-//oldClick;
-let score = 0;
 
+let hoverStack = [];
+let score = 0;
 let scoreToAdd = 0;
 
 function generateNew() {
@@ -105,6 +104,7 @@ function initBox(box, pos) {
         hoverStack = [pos];
     });
     box.addEventListener("mousemove", function (e) {
+			console.log("MOUSEMOVE", e);
         if (hoverStack.length > 0 && hoverStack.length < MAX_LENGTH) {
             if (hoverStack.length > 1 && objectEqual(hoverStack[hoverStack.length - 2], pos)) {
                 let last = hoverStack.pop();
@@ -128,19 +128,69 @@ function setLost() {
     document.querySelector("body").className = "lost";
 }
 
-document.addEventListener("mouseup", function (e) {
-    console.log("hoverStack", hoverStack);
+function inRect(pos, rect) {
+	return pos.x>=rect.left && pos.y>=rect.top && pos.x<=rect.right && pos.y<=rect.bottom;
+}
 
-    for (let pos of hoverStack) {
-        pos.box.className = "";
-    }
-    combine(hoverStack);
-    repaint();
-    hoverStack = [];
-    if (!checkSolvable()) {
-        setLost();
-    }
-});
+function findBox(playField, ev) {
+		let curpos = {x: ev.touches[0].clientX, y: ev.touches[0].clientY};
+
+		// find right box
+		let boxes = playField.querySelectorAll("play-box");
+		for(let box of boxes) {
+			let rect = box.getBoundingClientRect();
+			if(inRect(curpos, rect)) {
+				return box;
+			}
+		}
+	return null;
+}
+
+function initGlobalEventListeners() {
+	document.addEventListener("mouseup", function (e) {
+		console.log("hoverStack", hoverStack);
+
+		for (let pos of hoverStack) {
+			pos.box.className = "";
+		}
+		combine(hoverStack);
+		repaint();
+		hoverStack = [];
+		if (!checkSolvable()) {
+			setLost();
+		}
+	});
+
+	let playField = document.querySelector("play-field");
+
+	playField.addEventListener("touchstart", function(ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+		let box = findBox(playField, ev);
+		if(box) {
+				box.dispatchEvent(new CustomEvent("mousedown"));
+				console.log("FOUND", box);
+		}
+	});
+	playField.addEventListener("touchmove", function(ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+		let box = findBox(playField, ev);
+		if(box) {
+				box.dispatchEvent(new CustomEvent("mousemove"));
+				console.log("FOUND", box);
+		}
+	}, false);
+	playField.addEventListener("touchend", function(ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+		document.dispatchEvent(new CustomEvent("mouseup"));
+	});
+	document.body.addEventListener("touchmove", function(ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+	}, false);
+}
 
 function paintBox(grid, index, el) {
     el.className = "";
@@ -159,15 +209,15 @@ function display(el, grid) {
         for (let index = 0; index < grid.length; index++) {
             let box = el.children[index];
             paintBox(grid, index, box);
-            displayScore();
         }
     }
+	displayScore();
 }
 
 function displayScore() {
     const scoreElement = document.querySelector("score");
     const scoreAddElement = document.querySelector("score-to-add");
-    // score.appendChild(new)
+
     scoreElement.innerHTML = `${score}`;
     scoreAddElement.innerHTML = (scoreToAdd !== 0) ? ` +${scoreToAdd}` : '';
 }
@@ -175,7 +225,6 @@ function displayScore() {
 function repaint() {
     display(document.querySelector("play-field"), grid);
     displayScore()
-
 }
 
 
@@ -186,3 +235,4 @@ function initStyle() {
 initStyle();
 initGrid(WIDTH, WIDTH);
 repaint();
+initGlobalEventListeners();
