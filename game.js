@@ -1,5 +1,5 @@
 const grid = [];
-const WIDTH = 4;
+const WIDTH = 6;
 const MAX_LENGTH = 100;
 
 let hoverStack = [];
@@ -50,10 +50,19 @@ function checkSolvable() {
 }
 
 function calculateScoreToAdd(posStack) {
-    let lastPos = posStack[posStack.length - 1];
-    let baseExp = Math.log(grid[lastPos.index]) / Math.log(2);
 
-    return Math.pow(2, baseExp + posStack.length - 1);
+	let lastPos = posStack[posStack.length - 1];
+	if("aufrunden" == "aufrunden") {
+    let temp = grid[lastPos.index] * posStack.length;
+
+	
+    let exp = Math.ceil(Math.log(temp) / Math.log(2));
+
+    return Math.pow(2, exp);
+	} else {
+    
+
+	}
 }
 
 // pos0 = {x:2, y:3, index:20}
