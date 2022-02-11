@@ -38,6 +38,8 @@ body {
     overscroll-behavior: contain;
 		padding:0px;
 		margin:0px;
+    position: fixed;
+    overflow: hidden;
 }
 
 play-field {
@@ -86,7 +88,7 @@ play-box.active {
         transform: scale(1.0);
     }
     100% {
-        transform: scale(1.05);
+        transform: scale(1.1);
     }
 }
 
