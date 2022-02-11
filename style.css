@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 /*--playbox-width*/
 :root {
-    --play-field-dimension: 6;
+    --play-field-dimension: 5;
     --play-field-size: 512px;
     --play-box-size: 128px;
     --box-font-size: 64px;
@@ -36,6 +36,8 @@ body {
     place-content: center;
     place-items: center;
     overscroll-behavior: contain;
+		padding:0px;
+		margin:0px;
 }
 
 play-field {
