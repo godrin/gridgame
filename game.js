@@ -1,5 +1,5 @@
 const grid = [];
-const WIDTH = 6;
+const WIDTH = 5;
 const MAX_LENGTH = 100;
 
 let hoverStack = [];
