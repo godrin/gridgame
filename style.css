@@ -2,6 +2,7 @@
 /*--playbox-width*/
 :root {
     --play-field-dimension: 6;
+    --play-field-size: 512px;
     --play-box-size: 128px;
     --box-font-size: 64px;
 
@@ -34,12 +35,16 @@ body {
 }
 
 play-field {
-    width: calc(var(--play-box-size) * var(--play-field-dimension));
-    height: calc(var(--play-box-size) * var(--play-field-dimension));
+    //width: calc(var(--play-box-size) * var(--play-field-dimension));
+    //height: calc(var(--play-box-size) * var(--play-field-dimension));
     display: grid;
-    grid-template-columns: repeat(var(--play-field-dimension), var(--play-box-size));
+    grid-template-columns: repeat(var(--play-field-dimension), calc(100% / var(--play-field-dimension)));
     padding: 1px;
     user-select: none;
+    max-width: 100vw;
+    max-height: 100vw;
+    width: var(--play-field-size);
+    height: var(--play-field-size);
 }
 
 .lost play-field {
@@ -47,8 +52,6 @@ play-field {
 }
 
 play-box {
-    width: var(--play-box-size);
-    height: var(--play-box-size);
     background-color: var(--secondary-color);
     border: solid 4px var(--primary-color);
     border-radius: 8px;
