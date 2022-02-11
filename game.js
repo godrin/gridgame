@@ -104,7 +104,6 @@ function initBox(box, pos) {
         hoverStack = [pos];
     });
     box.addEventListener("mousemove", function (e) {
-			console.log("MOUSEMOVE", e);
         if (hoverStack.length > 0 && hoverStack.length < MAX_LENGTH) {
             if (hoverStack.length > 1 && objectEqual(hoverStack[hoverStack.length - 2], pos)) {
                 let last = hoverStack.pop();
@@ -118,7 +117,6 @@ function initBox(box, pos) {
                 // displayScore()
             }
             scoreToAdd = calculateScoreToAdd(hoverStack);
-            console.log(scoreToAdd)
             displayScore()
         }
     });
