@@ -30,6 +30,7 @@ body {
     display: grid;
     place-content: center;
     place-items: center;
+    overscroll-behavior: contain;
 }
 
 play-field {
