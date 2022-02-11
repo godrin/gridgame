@@ -36,10 +36,10 @@ function checkCombinable(pos0, pos1) {
 // game logic
 
 function checkSolvable() {
-		for(let x=0; x<WIDTH-1; x++) {
-				for(let y=0; y<WIDTH-1; y++) {
+		for(let x=0; x<WIDTH; x++) {
+				for(let y=0; y<WIDTH; y++) {
 						var i = x + y * WIDTH;
-						if(combinableByIndex(i, i+1) || combinableByIndex(i, i + WIDTH)) {
+						if((x<WIDTH-1 && combinableByIndex(i, i+1)) || (y<WIDTH-1 && combinableByIndex(i, i + WIDTH))) {
 								console.log("COMBINABLE", x,y);
 								return true;
 						}
