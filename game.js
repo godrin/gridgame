@@ -1,12 +1,12 @@
 const grid = [];
-const WIDTH = 4;
+const WIDTH = 6;
 const MAX_LENGTH = 100;
 let hoverStack = [];
 //oldClick;
 let score = 0;
 
 function generateNew() {
-		var r = Math.floor(Math.random()*2);
+		let r = Math.floor(Math.random()*3);
 		return Math.pow(2, r);
 }
 
@@ -145,5 +145,14 @@ function repaint() {
 		displayScore(document.querySelector("score"), score);
 }
 
+
+function initStyle() {
+	// const style = getComputedStyle(document.body);
+	// console.log(style.getPropertyValue('--play-field-dimension'));
+	// style.setProperty('--play-field-dimension', WIDTH.toString());
+	document.documentElement.style.setProperty('--play-field-dimension', WIDTH.toString());
+}
+
+initStyle();
 initGrid(WIDTH, WIDTH);
 repaint();

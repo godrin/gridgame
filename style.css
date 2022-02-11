@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+/*--playbox-width*/
+:root {
+    --play-field-dimension: 6;
+    --play-box-size: 128px;
+    --box-font-size: 64px;
+
+    /* THEME */
+    --background-color: #0b0b41;
+    --font-color: #0b0b41;
+    --primary-color: #59063c;
+    --secondary-color: #e073bd;
+    --active-color: #72a1de;
+    --hover-color: #bb519a;
+    --error-color: #ff0000;
+}
+
+
+*, body, html {
+    font-family: 'Share Tech Mono', monospace;
+    box-sizing: border-box;
+}
+
+
+body {
+    background-color: var(--background-color);
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    place-content: center;
+    place-items: center;
+    /*gap: 32px;*/
+    /*font-family: Helvetica;*/
+}
+
+play-field {
+    /*background-color: white;*/
+    /*width: 244px;*/
+    width: calc(var(--play-box-size) * var(--play-field-dimension));
+    height: calc(var(--play-box-size) * var(--play-field-dimension));
+    display: grid;
+    grid-template-columns: repeat(var(--play-field-dimension), var(--play-box-size));
+    padding: 1px;
+    user-select: none;
+}
+
+.lost play-field {
+    opacity:0.8;
+}
+play-box {
+    width:var(--play-box-size);
+    height:var(--play-box-size);
+    background-color:var(--secondary-color);
+    border: solid 4px var(--primary-color);
+    color:var(--primary-color);
+    font-size: var(--box-font-size);
+
+    display: grid;
+    place-content: center;
+    transition: background-color 200ms linear;
+}
+play-box:hover {
+    background-color:var(--hover-color);
+}
+
+play-box.active {
+    background-color:var(--active-color);
+}
+play-banner {
+    display:none;
+}
+
+.lost play-banner {
+    /*font-family: Helvetica;*/
+    font-size:40px;
+    color: red;
+    position: absolute;
+    z-index:1;
+    top: 40px;
+    left:50px;
+    display:block;
+    padding: 20px;
+    background-color:white;
+    border:1px solid black;
+}
+.lost play-box {
+    background-color:#AAA;
+}
+/*
+
+play-box.active {
+    background: red;
+}
+*/
+
+score {
+    color: white;
+    font-size: 64px;
+}

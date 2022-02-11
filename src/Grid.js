@@ -1,6 +1,6 @@
 const Field = ({value, col, row, startField, endField, handleClick}) => {
-    const isStartField = startField && startField.col == col && startField.row == row;
-    const isEndField = endField && endField.col == col && endField.row == row;
+    const isStartField = startField && startField.col === col && startField.row === row;
+    const isEndField = endField && endField.col === col && endField.row === row;
     const classes = `field ${isStartField ? 'field--start' : ''} ${isEndField ? 'field--end' : ''}`;
     return (
         <div className={classes } onClick={() => handleClick(row, col, value)}>

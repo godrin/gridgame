@@ -1,81 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<style type="text/css">
-				body {
-					background-color: blue;
-					box-sizing: border-box;
-					width: 100vw;
-					height: 100vh;
-					display: grid;
-					place-content: center;
-					place-items: center;
-					gap: 32px;
-					font-family: Helvetica;
-				}
-
-				play-field {
-					background-color: white;
-					width: 244px;
-					height: 244px;
-					display: block;
-					padding: 1px;
-					user-select: none;
-				}
-
-				.lost play-field {
-					opacity:0.8;
-				}
-				play-box {
-					width:40px;
-					height:40px;
-					line-height:30px;
-					background-color:#AAAAFF;
-					padding:5px;
-					margin:5px;
-					display:block;
-					text-align:center;
-					float:left;
-					transition: background-color 200ms linear;
-				}
-				play-box:hover {
-					background-color:#BBBBFF;
-				}
-
-				play-box.active {
-					background: red;
-				}
-				play-banner {
-					display:none;
-				}
-
-				.lost play-banner {
-					font-family: Helvetica;
-					font-size:40px;
-					color: red;
-					position: absolute;
-					z-index:1;
-					top: 40px;
-					left:50px;
-					display:block;
-					padding: 20px;
-					background-color:white;
-					border:1px solid black;
-				}
-				.lost play-box {
-					background-color:#AAA;
-				}
-
-				play-box.active {
-					background: red;
-				}
-
-				score {
-					color: white;
-					font-size: 64px;
-				}
-		</style>
+		<title>GridGame</title>
 		<script type="module" src="game.js"></script>
+		<link href="style.css" rel="stylesheet"/>
 	</head>
 
 	<body>
