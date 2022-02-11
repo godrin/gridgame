@@ -1,5 +1,5 @@
 const grid = [];
-const WIDTH = 6;
+const WIDTH = 4;
 const MAX_LENGTH = 100;
 let hoverStack = [];
 //oldClick;
@@ -38,7 +38,7 @@ function checkCombinable(pos0, pos1) {
 function checkSolvable() {
 		for(let x=0; x<WIDTH-1; x++) {
 				for(let y=0; y<WIDTH-1; y++) {
-						var i = x + y * WIDTH;
+						let i = x + y * WIDTH;
 						if(combinableByIndex(i, i+1) || combinableByIndex(i, i + WIDTH)) {
 								console.log("COMBINABLE", x,y);
 								return true;
@@ -54,11 +54,11 @@ function combine(posStack) {
 				return;
 		}
 		// spiel mechanik
-		for(var pos of posStack.slice(0,-1)) {
+		for(let pos of posStack.slice(0,-1)) {
 				grid[pos.index] = generateNew();
 		}
-		var lastPos = posStack[posStack.length-1];
-		var baseExp = Math.log(grid[lastPos.index]) / Math.log(2);
+		let lastPos = posStack[posStack.length-1];
+		let baseExp = Math.log(grid[lastPos.index]) / Math.log(2);
 
 		score += grid[lastPos.index] = Math.pow(2,baseExp + posStack.length-1);
 }
@@ -147,9 +147,6 @@ function repaint() {
 
 
 function initStyle() {
-	// const style = getComputedStyle(document.body);
-	// console.log(style.getPropertyValue('--play-field-dimension'));
-	// style.setProperty('--play-field-dimension', WIDTH.toString());
 	document.documentElement.style.setProperty('--play-field-dimension', WIDTH.toString());
 }
 
