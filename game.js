@@ -6,7 +6,7 @@ let hoverStack = [];
 let score = 0;
 
 function generateNew() {
-		var r = Math.floor(Math.random()*2);
+		var r = Math.floor(Math.random()*3);
 		return Math.pow(2, r);
 }
 
